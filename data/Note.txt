@@ -1,0 +1,4 @@
+Primary data comes from the below Kaggle Chanllenge
+https://www.kaggle.com/c/challenges-in-representation-learning-facial-expression-recognition-challenge
+
+Download and extract the csv file here.
