@@ -15,11 +15,6 @@ MODEL_PATH = 'models/weights.CNN_2_4_4_32_layer'
 # Using data feeder to load data
 data_feeder = data_feeder()
 data_feeder.load_data()
-data_feeder.train_validation_split()
-train_X = data_feeder.train_X_train
-train_Y = data_feeder.train_Y_train
-train_X_validation = data_feeder.train_X_validation
-train_Y_validation = data_feeder.train_Y_validation
 test_X = data_feeder.test_X
 test_Y = data_feeder.test_Y
 
@@ -59,19 +54,6 @@ path = MODEL_PATH
 verbose = 1 # Set to show data
 checkpointer = ModelCheckpoint(filepath=path, 
                                         verbose=verbose, save_best_only=True)
-
-# Try loading the best trained model from last
-try:
-    model.load_weights(path)
-except:
-    print('new model created')
-
-# Train model
-model.fit(train_X, train_Y,
-            batch_size=batch_size,
-            epochs=epochs,
-            validation_data=(train_X_validation, train_Y_validation),
-            shuffle=True, callbacks=[checkpointer], verbose = verbose)
 
 # Load the best trained model
 model.load_weights(path)
