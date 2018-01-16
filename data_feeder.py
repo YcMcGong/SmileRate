@@ -10,7 +10,7 @@ import os.path
 CSV_DATA_PATH = 'data/data.csv'
 DATA_PATH = 'data/'
 IMG_SIZE = 48
-NUMBER_OF_CLASS = 6
+NUMBER_OF_CLASS = 7
 
 class data_feeder():
 
@@ -78,11 +78,53 @@ class data_feeder():
     def train_validation_split(self, validation_ratio = 0.1):
         self.train_X_train, self.train_X_validation, self.train_Y_train, self.train_Y_validation = train_test_split(
             self.train_X, self.train_Y, test_size=validation_ratio, random_state=35)
+    
+    def train_validation_split_subset(self, target, validation_ratio = 0.1): # target is a list
+
+        # Check the original data to get a list of emotions and re-arrange the train and test data
+        # Load training data
+        df_train = self.data.loc[self.data['Usage'] == 'Training']
+        emotion_order_train = df_train['emotion']
+
+        # Load testing data
+        df_test = self.data.loc[self.data['Usage'] == 'PrivateTest']
+        emotion_order_test = df_test['emotion']
+
+        # Re-order training set to create subset
+        new_train_X_subset = []
+        new_train_Y_subset = []
+        new_test_X_subset = []
+        new_test_Y_subset = []
+        for i in emotion_order_train:
+            if i in target:
+                new_train_X_subset.append(self.train_X[i])
+                new_train_Y_subset.append(self.train_Y[i])
+        for i in emotion_order_test:
+            if i in target:
+                new_test_X_subset.append(self.test_X[i])
+                new_test_Y_subset.append(self.test_Y[i])
+
+        train_X_subset = np.array(new_train_X_subset) 
+        train_Y_subset = np.array(new_train_Y_subset)
+        self.test_X_subset = np.array(new_test_X_subset)
+        self.test_Y_subset = np.array(new_test_Y_subset)
+
+        self.train_X_subset_train, self.train_X_subset_validation, self.train_Y_subset_train, self.train_Y_subset_validation = train_test_split(
+            train_X_subset, train_Y_subset, test_size=validation_ratio, random_state=35)
+
+    def print_distribution(self):
+        
+        df = self.data
+        df_train = df.loc[df['Usage'] == 'Training']
+        # df_train = df.loc[df['Usage'] == 'PrivateTest']
+        train_Y = df_train['emotion'].values
+        for i in range(NUMBER_OF_CLASS):
+            print(sum(train_Y==i))
+        
+        
+
 
 if __name__ == '__main__':
     data_feeder = data_feeder()
     data_feeder.load_data(CSV_DATA_PATH)
-    print(data_feeder.test_Y)
-    # print(data_feeder.test_Y[0,1])
-
-        
+    data_feeder.train_validation_split_subset(target = [0, 1, 2])
