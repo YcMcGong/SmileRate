@@ -5,13 +5,10 @@ from keras.callbacks import ModelCheckpoint
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D, GlobalMaxPooling2D
 
-def load_model():
+def load_model(num_classes = 7):
     
     # Start model
     model = Sequential()
-    batch_size = 2000
-    num_classes = 7
-    epochs = 1
 
     # Model definition
 
@@ -24,25 +21,25 @@ def load_model():
     model.add(Dropout(0.25))
 
     # CNN 2
-    model.add(Conv2D(64, 3, strides = (1,1), padding='valid')
+    model.add(Conv2D(64, 3, strides = (1,1), padding='same'))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Dropout(0.25))
 
     # CNN 3
-    model.add(Conv2D(128, 3, strides = (1,1), padding='valid')
+    model.add(Conv2D(128, 3, strides = (1,1), padding='same'))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Dropout(0.25))
     
     # CNN 4
-    model.add(Conv2D(128, 3, strides = (1,1), padding='valid')
+    model.add(Conv2D(128, 3, strides = (1,1), padding='same'))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Dropout(0.25))
 
     # CNN 5
-    model.add(Conv2D(128, 3, strides = (1,1), padding='valid')
+    model.add(Conv2D(128, 3, strides = (1,1), padding='same'))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Dropout(0.25))
@@ -54,7 +51,6 @@ def load_model():
     model.add(Dropout(0.5))
 
     # Fully 2
-    model.add(Flatten())
     model.add(Dense(1024))
     model.add(Activation('relu'))
     model.add(Dropout(0.5))

@@ -98,16 +98,75 @@ class data_feeder():
         for i in emotion_order_train:
             if i in target:
                 new_train_X_subset.append(self.train_X[i])
-                new_train_Y_subset.append(self.train_Y[i])
+                new_train_Y_subset.append(i)
         for i in emotion_order_test:
             if i in target:
                 new_test_X_subset.append(self.test_X[i])
-                new_test_Y_subset.append(self.test_Y[i])
+                new_test_Y_subset.append(i)
 
         train_X_subset = np.array(new_train_X_subset) 
-        train_Y_subset = np.array(new_train_Y_subset)
+        train_Y_subset = np.array(new_train_Y_subset).reshape(-1,1)
         self.test_X_subset = np.array(new_test_X_subset)
-        self.test_Y_subset = np.array(new_test_Y_subset)
+        test_Y_subset = np.array(new_test_Y_subset).reshape(-1,1)
+
+        enc = OneHotEncoder()
+        train_Y_subset = enc.fit_transform(train_Y_subset).toarray()
+        self.test_Y_subset = enc.fit_transform(test_Y_subset).toarray()
+
+        self.train_X_subset_train, self.train_X_subset_validation, self.train_Y_subset_train, self.train_Y_subset_validation = train_test_split(
+            train_X_subset, train_Y_subset, test_size=validation_ratio, random_state=35)
+
+
+    def train_validation_split_good_bad_neutral_split(self, good = [3,5], bad = [0, 1, 2 , 4], neutral = [6], validation_ratio = 0.1): # target is a list
+
+        # Check the original data to get a list of emotions and re-arrange the train and test data
+        # Load training data
+        df_train = self.data.loc[self.data['Usage'] == 'Training']
+        emotion_order_train = df_train['emotion']
+
+        # Load testing data
+        df_test = self.data.loc[self.data['Usage'] == 'PrivateTest']
+        emotion_order_test = df_test['emotion']
+
+        # Re-order training set to create subset
+        new_train_X_subset = []
+        new_train_Y_subset = []
+        new_test_X_subset = []
+        new_test_Y_subset = []
+        for i in emotion_order_train:
+            if i in good:
+                new_train_X_subset.append(self.train_X[i])
+                new_train_Y_subset.append(0)
+            
+            elif i in bad:
+                new_train_X_subset.append(self.train_X[i])
+                new_train_Y_subset.append(1)
+
+            elif i in neutral:
+                new_train_X_subset.append(self.train_X[i])
+                new_train_Y_subset.append(2)
+                
+        for i in emotion_order_test:
+            if i in good:
+                new_test_X_subset.append(self.test_X[i])
+                new_test_Y_subset.append(0)
+            
+            elif i in bad:
+                new_test_X_subset.append(self.test_X[i])
+                new_test_Y_subset.append(1)
+
+            elif i in bad:
+                new_test_X_subset.append(self.test_X[i])
+                new_test_Y_subset.append(2)
+
+        train_X_subset = np.array(new_train_X_subset) 
+        train_Y_subset = np.array(new_train_Y_subset).reshape(-1,1)
+        self.test_X_subset = np.array(new_test_X_subset)
+        test_Y_subset = np.array(new_test_Y_subset).reshape(-1,1)
+
+        enc = OneHotEncoder()
+        train_Y_subset = enc.fit_transform(train_Y_subset).toarray()
+        self.test_Y_subset = enc.fit_transform(test_Y_subset).toarray()
 
         self.train_X_subset_train, self.train_X_subset_validation, self.train_Y_subset_train, self.train_Y_subset_validation = train_test_split(
             train_X_subset, train_Y_subset, test_size=validation_ratio, random_state=35)
@@ -127,4 +186,5 @@ class data_feeder():
 if __name__ == '__main__':
     data_feeder = data_feeder()
     data_feeder.load_data(CSV_DATA_PATH)
-    data_feeder.train_validation_split_subset(target = [0, 1, 2])
+    data_feeder.train_validation_split_subset(target = [0,2])
+    print(data_feeder.test_Y_subset[0:10])

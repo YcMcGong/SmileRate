@@ -12,21 +12,51 @@ from keras.layers import Conv2D, MaxPooling2D, GlobalMaxPooling2D
 from model import load_model
 
 # Define path for saved model
-MODEL_PATH = 'models/weights.CNN_2_4_4_32_layer'
+MODEL_PATH = 'models/weights.CNN_new'
 
 # Using data feeder to load data
+
+# All data
+# data_feeder = data_feeder()
+# data_feeder.load_data()
+# data_feeder.train_validation_split()
+# train_X = data_feeder.train_X_train
+# train_Y = data_feeder.train_Y_train
+# train_X_validation = data_feeder.train_X_validation
+# train_Y_validation = data_feeder.train_Y_validation
+# test_X = data_feeder.test_X
+# test_Y = data_feeder.test_Y
+
+# Subset data
+# data_feeder = data_feeder()
+# data_feeder.load_data()
+# data_feeder.train_validation_split_subset(target = [0,2,3,4,5,6])
+# train_X = data_feeder.train_X_subset_train
+# train_Y = data_feeder.train_Y_subset_train
+# train_X_validation = data_feeder.train_X_subset_validation
+# train_Y_validation = data_feeder.train_Y_subset_validation
+# test_X = data_feeder.test_X_subset
+# test_Y = data_feeder.test_Y_subset
+
+
+# Good bad data
 data_feeder = data_feeder()
 data_feeder.load_data()
-data_feeder.train_validation_split()
-train_X = data_feeder.train_X_train
-train_Y = data_feeder.train_Y_train
-train_X_validation = data_feeder.train_X_validation
-train_Y_validation = data_feeder.train_Y_validation
-test_X = data_feeder.test_X
-test_Y = data_feeder.test_Y
+data_feeder.train_validation_split_good_bad_neutral_split()
+train_X = data_feeder.train_X_subset_train
+train_Y = data_feeder.train_Y_subset_train
+train_X_validation = data_feeder.train_X_subset_validation
+train_Y_validation = data_feeder.train_Y_subset_validation
+test_X = data_feeder.test_X_subset
+test_Y = data_feeder.test_Y_subset
+
+# Load parameters
+batch_size = 500
+num_classes = 3
+epochs = 500
 
 # Load model
-model = load_model()
+model = load_model(num_classes)
 
 # Set checkpoint
 path = MODEL_PATH

@@ -24,10 +24,10 @@ test_Y = data_feeder.test_Y
 model = Sequential()
 batch_size = 2000
 num_classes = 7
-epochs = 1
+epochs = 1000
 
 # Load model
-model = load_model()
+model = load_model(num_classes)
 
 # Set checkpoint
 path = MODEL_PATH
