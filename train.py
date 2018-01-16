@@ -28,21 +28,9 @@ MODEL_PATH = 'models/weights.CNN_new'
 # test_Y = data_feeder.test_Y
 
 # Subset data
-# data_feeder = data_feeder()
-# data_feeder.load_data()
-# data_feeder.train_validation_split_subset(target = [0,2,3,4,5,6])
-# train_X = data_feeder.train_X_subset_train
-# train_Y = data_feeder.train_Y_subset_train
-# train_X_validation = data_feeder.train_X_subset_validation
-# train_Y_validation = data_feeder.train_Y_subset_validation
-# test_X = data_feeder.test_X_subset
-# test_Y = data_feeder.test_Y_subset
-
-
-# Good bad data
 data_feeder = data_feeder()
 data_feeder.load_data()
-data_feeder.train_validation_split_good_bad_neutral_split()
+data_feeder.train_validation_split_subset(target = [0,2,3,4,5,6])
 train_X = data_feeder.train_X_subset_train
 train_Y = data_feeder.train_Y_subset_train
 train_X_validation = data_feeder.train_X_subset_validation
@@ -50,9 +38,21 @@ train_Y_validation = data_feeder.train_Y_subset_validation
 test_X = data_feeder.test_X_subset
 test_Y = data_feeder.test_Y_subset
 
+
+# Good bad data
+# data_feeder = data_feeder()
+# data_feeder.load_data()
+# data_feeder.train_validation_split_good_bad_neutral_split()
+# train_X = data_feeder.train_X_subset_train
+# train_Y = data_feeder.train_Y_subset_train
+# train_X_validation = data_feeder.train_X_subset_validation
+# train_Y_validation = data_feeder.train_Y_subset_validation
+# test_X = data_feeder.test_X_subset
+# test_Y = data_feeder.test_Y_subset
+
 # Load parameters
 batch_size = 500
-num_classes = 3
+num_classes = 6
 epochs = 500
 
 # Load model

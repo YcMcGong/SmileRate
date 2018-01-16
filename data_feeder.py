@@ -95,14 +95,14 @@ class data_feeder():
         new_train_Y_subset = []
         new_test_X_subset = []
         new_test_Y_subset = []
-        for i in emotion_order_train:
-            if i in target:
-                new_train_X_subset.append(self.train_X[i])
-                new_train_Y_subset.append(i)
-        for i in emotion_order_test:
-            if i in target:
-                new_test_X_subset.append(self.test_X[i])
-                new_test_Y_subset.append(i)
+        for index, emotion in enumerate(emotion_order_train):
+            if emotion in target:
+                new_train_X_subset.append(self.train_X[index])
+                new_train_Y_subset.append(emotion)
+        for index, emotion in enumerate(emotion_order_test):
+            if emotion in target:
+                new_test_X_subset.append(self.test_X[index])
+                new_test_Y_subset.append(emotion)
 
         train_X_subset = np.array(new_train_X_subset) 
         train_Y_subset = np.array(new_train_Y_subset).reshape(-1,1)
@@ -133,30 +133,30 @@ class data_feeder():
         new_train_Y_subset = []
         new_test_X_subset = []
         new_test_Y_subset = []
-        for i in emotion_order_train:
-            if i in good:
-                new_train_X_subset.append(self.train_X[i])
+        for index, emotion in enumerate(emotion_order_train):
+            if emotion in good:
+                new_train_X_subset.append(self.train_X[index])
                 new_train_Y_subset.append(0)
             
-            elif i in bad:
-                new_train_X_subset.append(self.train_X[i])
+            elif emotion in bad:
+                new_train_X_subset.append(self.train_X[index])
                 new_train_Y_subset.append(1)
 
-            elif i in neutral:
-                new_train_X_subset.append(self.train_X[i])
+            elif emotion in neutral:
+                new_train_X_subset.append(self.train_X[index])
                 new_train_Y_subset.append(2)
                 
-        for i in emotion_order_test:
-            if i in good:
-                new_test_X_subset.append(self.test_X[i])
+        for index, emotion in enumerate(emotion_order_test):
+            if emotion in good:
+                new_test_X_subset.append(self.test_X[index])
                 new_test_Y_subset.append(0)
             
-            elif i in bad:
-                new_test_X_subset.append(self.test_X[i])
+            elif emotion in bad:
+                new_test_X_subset.append(self.test_X[index])
                 new_test_Y_subset.append(1)
 
-            elif i in bad:
-                new_test_X_subset.append(self.test_X[i])
+            elif emotion in bad:
+                new_test_X_subset.append(self.test_X[index])
                 new_test_Y_subset.append(2)
 
         train_X_subset = np.array(new_train_X_subset) 
@@ -187,4 +187,3 @@ if __name__ == '__main__':
     data_feeder = data_feeder()
     data_feeder.load_data(CSV_DATA_PATH)
     data_feeder.train_validation_split_subset(target = [0,2])
-    print(data_feeder.test_Y_subset[0:10])
