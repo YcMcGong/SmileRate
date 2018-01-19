@@ -12,22 +12,30 @@ from keras.layers import Conv2D, MaxPooling2D, GlobalMaxPooling2D
 from model import load_model
 
 # Define path for saved model
-MODEL_PATH = 'models/weights.CNN_2_4_4_32_layer'
+MODEL_PATH = 'models/weights.CNN_new_good_bad'
 
 # Using data feeder to load data
+# All data
+# data_feeder = data_feeder()
+# data_feeder.load_data()
+# test_X = data_feeder.test_X
+# test_Y = data_feeder.test_Y
+
+# Good bad data
 data_feeder = data_feeder()
 data_feeder.load_data()
-test_X = data_feeder.test_X
-test_Y = data_feeder.test_Y
+data_feeder.train_validation_split_good_bad_neutral_split()
+test_X = data_feeder.test_X_subset
+test_Y = data_feeder.test_Y_subset
 
 # Start model
 model = Sequential()
-batch_size = 2000
-num_classes = 7
+batch_size = 500
+num_classes = 3
 epochs = 1000
 
 # Load model
-model = load_model(num_classes)
+model = load_model(num_classes, type = 'good_bad')
 
 # Set checkpoint
 path = MODEL_PATH
